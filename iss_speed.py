@@ -2,8 +2,13 @@ from exif import Image
 from datetime import datetime
 import math
 from decimal import *
+import time
+#from picamera import PiCamera
+
+#!MAXIM 5 CIFRE, DE CITIT DOCUMENTATIA
 
 def decimal_coords(coords, ref):
+    
     decimal_degrees = Decimal(coords[0] + coords[1] / 60 + coords[2] / 3600)
     if ref == "S" or ref =='W' :
         decimal_degrees = -decimal_degrees
@@ -27,12 +32,10 @@ def image_coordinates(image_path):
         
     return(coords[0])
 
-#print(image_coordinates('photo_0683.jpg'))
-
 a=Decimal(6378.1370)
 b=Decimal(6357.7523)
-
 def earthRadius(lat):
+    
     phi=Decimal(lat)
     cosine=Decimal(math.cos(phi))
     sine=Decimal(math.sin(phi))
@@ -46,11 +49,50 @@ def earthRadius(lat):
 g=Decimal(6.673e-20)
 m=Decimal(5.972e24)
 def calcSpeed(radius, distance):
+    
     r=radius+distance
     speed=Decimal(math.sqrt((g*m)/r))
+    
     return speed
 
-for x in range(1, 55):
-    s='photo ('+ str(x)+').jpg'
-    print(calcSpeed(earthRadius(image_coordinates(s)), 403))
+def takePicture(imgName):
     
+    s=imgName
+    return (calcSpeed(earthRadius(image_coordinates(s)), 403))
+
+def getHeight():
+    return 403
+
+def calcImage(imgName):
+    s='photo ('+ str(x)+').jpg'
+    height = getHeight()
+    calcSpeed(earthRadius(image_coordinates(s)), height)
+ 
+ 
+def printOutput(speed):
+    f = open("result.txt", "w") 
+    rounded = "{:.4f}".format(speed)
+    f.write(str(rounded))
+    f.close()
+
+def Program():
+    mean = 0
+    cnt = 0
+    #cam = PiCamera()
+    #cam.resolution = (1296, 972)
+    
+    for i in range(1,40):
+        s='photo ('+ str(i)+').jpg'
+        print(s)
+        #fapoza()
+        #cam.capture(fs)
+        #calculeazadinpoza()
+        mean += takePicture(s)
+        cnt+=1
+        #calcImage(s)
+        time.sleep(1) #trebuie 15 ca sa avem 4 poze per minut, 1 e pentru testing, timpul e exprimat in secunde
+    
+    mean /= cnt
+    printOutput(mean)
+    
+Program()
