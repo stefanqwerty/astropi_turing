@@ -76,8 +76,8 @@ def Program():
     cam = PiCamera()
     cam.resolution = (4056, 3040)
     picNumber = 5
-    mins = 1
-    secs = 0
+    mins = 9
+    secs = 20
     time = mins * 60 + secs
     startTime = datetime.now()
     

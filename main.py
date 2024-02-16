@@ -1,4 +1,3 @@
-from exif import Image
 from math import *
 from decimal import Decimal
 from time import sleep
@@ -18,7 +17,6 @@ def earthRadius(latitude):
     radius=Decimal(sqrt((num) / (den)))
     
     return radius
-
 
 g = Decimal(6.673e-20)
 m = Decimal(5.972e24)
